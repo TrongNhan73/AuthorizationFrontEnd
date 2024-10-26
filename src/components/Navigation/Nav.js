@@ -1,12 +1,14 @@
 import React from 'react';
+import "./Nav.scss";
+import { NavLink } from 'react-router-dom';
 
 function nav(props) {
     return (
         <div className="topnav">
-            <a className="active" href="#home">Home</a>
-            <a href="#news">News</a>
-            <a href="#contact">Contact</a>
-            <a href="#about">About</a>
+            <NavLink to="/">Home</NavLink>
+            <NavLink to="/news">News</NavLink>
+            <NavLink to="/contact">Contact</NavLink>
+            <NavLink to="/about">About</NavLink>
         </div>
     );
 }
