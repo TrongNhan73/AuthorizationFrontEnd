@@ -1,0 +1,37 @@
+.red {
+    border: 1px solid red;
+}
+
+.blue {
+    border: 1px solid blue;
+}
+
+.green {
+    border: 1px solid green;
+}
+
+.login-container {
+    min-height: 100vh;
+    background-color: rgb(202, 240, 247);
+    width: 100%;
+
+    .content-right {
+        background-color: white;
+        border-radius: 10px;
+        border: 1px solid gray;
+        box-shadow: 10px 10px 8px #b3afaf;
+
+        .forgotpassword {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .content-left {
+        font-weight: 900;
+        color: #0d6efd;
+    }
+}

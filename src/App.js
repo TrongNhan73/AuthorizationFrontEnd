@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Nav />
+        {/* <Nav /> */}
         <Routes>
           <Route path="/news" Component={() => <div>news</div>} />
           <Route path="/about" Component={() => <div>about</div>} />
