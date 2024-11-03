@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import './Signup.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from "axios";
+import { registerNewUser } from '../../service/userService';
 
 
 
 
 function Signup(props) {
+    let navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [phoneNum, setPhoneNum] = useState('');
     const [userName, setUserName] = useState('');
@@ -33,21 +35,6 @@ function Signup(props) {
 
 
 
-    useEffect(() => {
-        let re = /\S+@\S+\.\S+/;
-        if (!re.test(email)) {
-            setObjCheckInput({ ...objCheckInput, isValidEmail: false });
-        } else {
-            setObjCheckInput({ ...objCheckInput, isValidEmail: true });
-        }
-    }, [email]);
-    useEffect(() => {
-        if (password !== passwordComfirm) {
-            setObjCheckInput({ ...objCheckInput, isValidPasswordComfirm: false });
-        } else {
-            setObjCheckInput({ ...objCheckInput, isValidPasswordComfirm: true });
-        }
-    }, [passwordComfirm]);
     const isValidInput = () => {
         if (!email) {
             setObjCheckInput({ ...objCheckInput, isValidEmail: false });
@@ -85,17 +72,21 @@ function Signup(props) {
                 return false;
             }
         }
-
-
-
         return true;
     }
 
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         let userData = { email, userName, phoneNum, password };
         if (isValidInput()) {
-            toast.success("Success");
+            let res = await registerNewUser(userData);
+            if (+res.data.EC == 0) {
+                toast.success("Success");
+                navigate('/login');
+            } else {
+                toast.error(res.data.EM);
+            }
+
         }
     }
 
@@ -110,7 +101,21 @@ function Signup(props) {
     }
 
 
-
+    useEffect(() => {
+        let re = /\S+@\S+\.\S+/;
+        if (!re.test(email)) {
+            setObjCheckInput({ ...objCheckInput, isValidEmail: false });
+        } else {
+            setObjCheckInput({ ...objCheckInput, isValidEmail: true });
+        }
+    }, [email]);
+    useEffect(() => {
+        if (password !== passwordComfirm) {
+            setObjCheckInput({ ...objCheckInput, isValidPasswordComfirm: false });
+        } else {
+            setObjCheckInput({ ...objCheckInput, isValidPasswordComfirm: true });
+        }
+    }, [passwordComfirm]);
     return (
         <div className="login-container d-flex align-items-center p-2">
             <div className="container d-block">
