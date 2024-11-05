@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import './Signup.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from "axios";
 import { registerNewUser } from '../../service/userService';
+import { isValidPhone, isValidPassword, isValidEmail } from '../../utils';
 
 
 
@@ -41,8 +41,7 @@ function Signup(props) {
             toast.error("Email is required!");
             return false;
         }
-        let re = /\S+@\S+\.\S+/;
-        if (!re.test(email)) {
+        if (!isValidEmail(email)) {
             toast.error("The email is invalid!");
             return false;
         }
@@ -71,6 +70,18 @@ function Signup(props) {
                 setObjCheckInput({ ...objCheckInput, isValidPasswordComfirm: false });
                 return false;
             }
+        }
+        if (!objCheckInput.isValidEmail) {
+            toast.error("The email is invalid!");
+            return false;
+        }
+        if (!objCheckInput.isValidPhoneNum) {
+            toast.error("The phone num is invalid!");
+            return false;
+        }
+        if (!objCheckInput.isValidPassword) {
+            toast.error("The password must have more 3 letter!");
+            return false;
         }
         return true;
     }
@@ -125,38 +136,62 @@ function Signup(props) {
                     </div>
                     <div className="content-right col-lg-5 d-flex flex-column gap-3 py-5 col-12 p-2  ">
                         <div className='form-group'>
-                            <label for='Email' className='form-label'>Email:</label>
+                            <label htmlFor='Email' className='form-label'>Email:</label>
                             <input type='email' className={styleCheckValidInput('Email', email)} placeholder='Email address' id='Email'
-                                value={email} onChange={(e) => setEmail(e.target.value)}
+                                value={email} onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    if (isValidEmail(e.target.value)) {
+                                        setObjCheckInput({ ...objCheckInput, isValidEmail: true })
+                                    } else {
+                                        setObjCheckInput({ ...objCheckInput, isValidEmail: false })
+
+                                    }
+                                }}
                             />
                         </div>
                         <div className='form-group'>
-                            <label for='PhoneNumer' className='form-label'>Phone Numer:</label>
+                            <label htmlFor='PhoneNumer' className='form-label'>Phone Numer:</label>
                             <input type='text' className={styleCheckValidInput('PhoneNum', phoneNum)} placeholder='Phone number' id='PhoneNumer'
-                                value={phoneNum} onChange={(e) => setPhoneNum(e.target.value)}
+                                value={phoneNum} onChange={(e) => {
+                                    setPhoneNum(e.target.value);
+                                    if (isValidPhone(e.target.value)) {
+                                        setObjCheckInput({ ...objCheckInput, isValidPhoneNum: true })
+                                    } else {
+                                        setObjCheckInput({ ...objCheckInput, isValidPhoneNum: false })
+
+                                    }
+                                }}
                             />
                         </div>
                         <div className='form-group'>
-                            <label for='Username' className='form-label'>User name:</label>
+                            <label htmlFor='Username' className='form-label'>User name:</label>
                             <input type='text' className={styleCheckValidInput('UserName', userName)} placeholder='User name' id='Username'
                                 value={userName} onChange={(e) => setUserName(e.target.value)}
                             />
                         </div>
                         <div className='form-group'>
-                            <label for='Password' className='form-label'>Password:</label>
+                            <label htmlFor='Password' className='form-label'>Password:</label>
                             <input type={showPassword ? 'text' : 'password'} className={styleCheckValidInput('Password', password)} placeholder='Password' id='Password'
-                                value={password} onChange={(e) => setPassword(e.target.value)}
+                                value={password} onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    if (isValidPassword(e.target.value)) {
+                                        setObjCheckInput({ ...objCheckInput, isValidPassword: true })
+
+                                    } else {
+                                        setObjCheckInput({ ...objCheckInput, isValidPassword: false })
+                                    }
+                                }}
                             />
                         </div>
                         <div className='form-group'>
-                            <label for='PasswordComfirm' className='form-label'>Comfirm Password:</label>
+                            <label htmlFor='PasswordComfirm' className='form-label'>Comfirm Password:</label>
                             <input type={showPassword ? 'text' : 'password'} className={styleCheckValidInput('PasswordComfirm', passwordComfirm)} placeholder='Comfirm Password' id='PasswordComfirm'
                                 value={passwordComfirm} onChange={(e) => setPasswordComfirm(e.target.value)}
                             />
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="cb-showPassword" onChange={(e) => handleShowPassword(e)} />
-                            <label class="form-check-label" for="cb-showPassword">
+                            <label class="form-check-label" htmlFor="cb-showPassword">
                                 Show password
                             </label>
                         </div>

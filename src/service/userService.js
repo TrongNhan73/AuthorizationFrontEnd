@@ -6,6 +6,12 @@ const registerNewUser = async ({ email, phoneNum, userName, password }) => {
     })
 }
 
+const login = async ({ ephone, password }) => {
+    return await axios.post('http://localhost:8081/api/v1/login', {
+        ephone, password
+    })
+}
 export {
-    registerNewUser
+    registerNewUser,
+    login
 }
