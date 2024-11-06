@@ -1,5 +1,5 @@
 import './Login.scss';
-import { isRouteErrorResponse, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { isValidEmail, isValidPhone, isValidPassword } from '../../utils';
@@ -9,6 +9,7 @@ import { login } from '../../service/userService';
 
 
 function Login(props) {
+    const navigate = useNavigate();
     const [ephone, setEPhoen] = useState('');
     const [password, setPassword] = useState('');
     const [isShowPassword, setIsShowPassword] = useState(false);
@@ -58,9 +59,15 @@ function Login(props) {
 
     const handleLogin = async () => {
         if (validate()) {
-            toast('success!');
             let res = await login({ ephone, password });
-            alert(JSON.stringify(res.data));
+            console.log(res.data);
+            if (res && res.data && +res.data.EC === 0) {
+                navigate('/users');
+                toast.success('Login successful');
+
+            } else {
+                toast.error(res.data.EM)
+            }
         }
     }
 
