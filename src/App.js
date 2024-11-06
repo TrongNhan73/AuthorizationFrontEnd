@@ -8,24 +8,48 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
   BrowserRouter as Router,
   Routes,
+  useNavigate,
   Route,
-  Link
+  Link,
+  json
 } from "react-router-dom";
+import { useEffect, useState } from "react";
+import _ from 'lodash';
+import { PrivateRoute } from "./utils/Component.utils";
+
+
 
 function App() {
+  const [account, setAccount] = useState({});
+  useEffect(() => {
+    let sessionData = JSON.parse(sessionStorage.getItem('account'));
+    if (!sessionData) {
+
+    } else {
+      setAccount(sessionData);
+
+    }
+  }, [])
   return (
     <Router>
+      {account && !_.isEmpty(account) && account.isAuthenticated && <Nav />}
       <div className="App">
         {/* <Nav /> */}
         <Routes>
-          <Route path="/news" Component={() => <div>news</div>} />
-          <Route path="/about" Component={() => <div>about</div>} />
-          <Route path="/contact" Component={() => <div>contact</div>} />
-          <Route path="/" Component={() => <div>home</div>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/users" element={<User />} />
-          <Route path="*" Component={() => <div>undefine</div>} />
+          <Route path="*" element={<PrivateRoute authentication={account.isAuthenticated}>
+
+            <Route path="/news" Component={() => <div>news</div>} />
+            <Route path="/about" Component={() => <div>about</div>} />
+            <Route path="/contact" Component={() => <div>contact</div>} />
+            <Route path="/" Component={() => <div>home</div>} />
+
+            <Route path="/users" element={<User />} />
+            <Route path="*" Component={() => <div>undefine</div>} />
+
+          </PrivateRoute>} />
+
         </Routes>
       </div>
       <ToastContainer

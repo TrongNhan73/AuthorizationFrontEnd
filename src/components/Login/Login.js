@@ -2,7 +2,7 @@ import './Login.scss';
 import { useNavigate, Link } from 'react-router-dom';
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
-import { isValidEmail, isValidPhone, isValidPassword } from '../../utils';
+import { isValidEmail, isValidPhone, isValidPassword } from '../../utils/Function.utils';
 import { login } from '../../service/userService';
 
 
@@ -60,8 +60,12 @@ function Login(props) {
     const handleLogin = async () => {
         if (validate()) {
             let res = await login({ ephone, password });
-            console.log(res.data);
             if (res && res.data && +res.data.EC === 0) {
+                let dataS = {
+                    isAuthenticated: true,
+                    token: 'fake token'
+                }
+                sessionStorage.setItem('account', JSON.stringify(dataS));
                 navigate('/users');
                 toast.success('Login successful');
 
