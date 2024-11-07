@@ -1,7 +1,4 @@
 import Nav from "./components/Navigation/Nav";
-import Login from "./components/Login/Login";
-import Signup from "./components/Signup/Signup";
-import { User } from "./components/User/User";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,7 +12,8 @@ import {
 } from "react-router-dom";
 import { useEffect, useState } from "react";
 import _ from 'lodash';
-import { PrivateRoute } from "./utils/Component.utils";
+import { AppRoutes } from "./routes/AppRoutes";
+
 
 
 
@@ -32,25 +30,13 @@ function App() {
   }, [])
   return (
     <Router>
-      {account && !_.isEmpty(account) && account.isAuthenticated && <Nav />}
       <div className="App">
-        {/* <Nav /> */}
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="*" element={<PrivateRoute authentication={account.isAuthenticated}>
-
-            <Route path="/news" Component={() => <div>news</div>} />
-            <Route path="/about" Component={() => <div>about</div>} />
-            <Route path="/contact" Component={() => <div>contact</div>} />
-            <Route path="/" Component={() => <div>home</div>} />
-
-            <Route path="/users" element={<User />} />
-            <Route path="*" Component={() => <div>undefine</div>} />
-
-          </PrivateRoute>} />
-
-        </Routes>
+        <div className="App-navigation">
+          <Nav />
+        </div>
+        <div className="App-container">
+          <AppRoutes />
+        </div>
       </div>
       <ToastContainer
         position="top-right"

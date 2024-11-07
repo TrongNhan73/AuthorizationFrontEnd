@@ -68,7 +68,6 @@ function Login(props) {
                 sessionStorage.setItem('account', JSON.stringify(dataS));
                 navigate('/users');
                 toast.success('Login successful');
-
             } else {
                 toast.error(res.data.EM)
             }
