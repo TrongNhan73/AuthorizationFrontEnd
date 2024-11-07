@@ -1,15 +1,14 @@
 import { useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 const PrivateRoutes = (prop) => {
-    let authen = '';
-    authen = sessionStorage.getItem('account');
+    let navigat = useNavigate();
+    useEffect(() => {
+        if (!Boolean(sessionStorage.getItem('account'))) {
+            navigat('/login');
+        }
+    }, [])
 
+    return <Outlet />
 
-    console.log(authen);
-    if (Boolean(authen)) {
-        return <Outlet />
-    } else {
-        return <Navigate to={'/login'} />
-    }
 }
 export default PrivateRoutes;
