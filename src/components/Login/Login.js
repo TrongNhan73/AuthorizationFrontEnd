@@ -1,6 +1,6 @@
 import './Login.scss';
 import { useNavigate, Link } from 'react-router-dom';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { isValidEmail, isValidPhone, isValidPassword } from '../../utils/Function.utils';
 import { login } from '../../service/userService';
@@ -74,6 +74,12 @@ function Login(props) {
         }
     }
 
+
+    useEffect(() => {
+        if (sessionStorage.getItem('account')) {
+            navigate('/')
+        }
+    }, [])
     return (
         <div className="login-container d-flex align-items-center p-2">
             <div className="container d-block">
