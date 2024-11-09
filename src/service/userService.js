@@ -11,8 +11,8 @@ const login = async ({ ephone, password }) => {
         ephone, password
     })
 }
-const getUserList = async () => {
-    return await axios.get(linkApi + '/users/read');
+const getUserList = async (page, limit) => {
+    return await axios.get(linkApi + '/users/read?page=' + page + '&limit=' + limit);
 }
 export {
     registerNewUser,

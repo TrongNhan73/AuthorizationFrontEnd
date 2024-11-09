@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import { getUserList } from '../../service/userService';
+import ReactPaginate from 'react-paginate';
+
+
 const User = () => {
     const [userList, setUserList] = useState([]);
+    const [currPage, setCurrPage] = useState(1);
+    const [currLimit, setCurrLimit] = useState(2);
+    const [totalPage, setTotalPage] = useState(0);
     useEffect(() => {
         getList();
-    }, []);
+    }, [currPage]);
     const getList = async () => {
         try {
-            let res = await getUserList();
-            if (+res.data.EC === 0) {
-                setUserList(res.data.DT)
+            let res = await getUserList(currPage, currLimit);
+            if (res && res.data && +res.data.EC === 0) {
+                setUserList(res.data.DT.users);
+                setTotalPage(res.data.DT.totalPage);
             } else {
                 console.log(res.data.EM);
             }
         } catch (e) {
             console.log(e.message);
         }
+    }
+
+
+    const handlePageClick = async (even) => {
+        setCurrPage(even.selected + 1);
+
     }
     return (
         <div className='user-container container    '>
@@ -42,6 +55,7 @@ const User = () => {
                             <th>Phone Number</th>
                             <th>Sex</th>
                             <th>Group</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,6 +70,10 @@ const User = () => {
                                             <td>{element.phone}</td>
                                             <td>{element.sex}</td>
                                             <td>{Boolean(element.Group) ? element.Group.name : 'null'}</td>
+                                            <td className=''>
+                                                <button className='btn btn-warning mr-1'>Edit</button>
+                                                <button className='btn btn-danger'>Delete</button>
+                                            </td>
                                         </tr>
                                     </>)
                                 }
@@ -72,15 +90,27 @@ const User = () => {
 
             </div>
             <div className='user-footer'>
-                <nav>
-                    <ul className='pagination'>
-                        <li className='page-item'><a className='page-link' href=''>Previous</a></li>
-                        <li className='page-item'><a className='page-link' href=''>1</a></li>
-                        <li className='page-item'><a className='page-link' href=''>2</a></li>
-                        <li className='page-item'><a className='page-link' href=''>3</a></li>
-                        <li className='page-item'><a className='page-link' href=''>Next </a></li>
-                    </ul>
-                </nav>
+                {totalPage > 0 &&
+                    <ReactPaginate
+                        nextLabel='next'
+                        previousLabel='previous'
+                        breakLabel='...'
+                        pageRangeDisplayed={2}
+                        marginPagesDisplayed={1}
+                        pageCount={totalPage}
+                        onPageChange={handlePageClick}
+                        className='pagination'
+                        breakClassName={'page-item'}
+                        breakLinkClassName={'page-link'}
+                        pageClassName={'page-item'}
+                        pageLinkClassName={'page-link'}
+                        previousClassName={'page-item'}
+                        previousLinkClassName={'page-link'}
+                        nextClassName={'page-item'}
+                        nextLinkClassName={'page-link'}
+                        activeClassName={'active'}
+                    />}
+
             </div>
         </div>
     )
