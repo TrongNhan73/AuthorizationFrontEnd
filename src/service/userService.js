@@ -14,8 +14,13 @@ const login = async ({ ephone, password }) => {
 const getUserList = async (page, limit) => {
     return await axios.get(linkApi + '/users/read?page=' + page + '&limit=' + limit);
 }
+
+const deleteUser = async (id) => {
+    return await axios.delete(linkApi + '/users/delete', { data: { id } });
+}
 export {
     registerNewUser,
     login,
-    getUserList
+    getUserList,
+    deleteUser
 }
