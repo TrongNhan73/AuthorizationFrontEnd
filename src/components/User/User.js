@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { getUserList, deleteUser, login } from '../../service/userService';
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
-import ModelDelete from './ModelDelete';
+import ModalDelete from './ModalDelete';
+import ModalUsers from './ModalUser';
 
 
 const User = () => {
@@ -10,8 +11,8 @@ const User = () => {
     const [currPage, setCurrPage] = useState(1);
     const [currLimit, setCurrLimit] = useState(2);
     const [totalPage, setTotalPage] = useState(0);
-    const [isShowModelDelete, setIsShowModelDelete] = useState(false);
-    const [dataModel, setDataModel] = useState({});
+    const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+    const [dataModal, setDataModal] = useState({});
     useEffect(() => {
         getList();
     }, [currPage]);
@@ -46,14 +47,14 @@ const User = () => {
         console.log(res);
     }
 
-    const openModelDelete = (user) => {
-        setDataModel(user);
-        setIsShowModelDelete(true);
+    const openModalDelete = (user) => {
+        setDataModal(user);
+        setIsShowModalDelete(true);
     }
 
-    const closeModelDelete = () => {
-        setDataModel({});
-        setIsShowModelDelete(false);
+    const closeModalDelete = () => {
+        setDataModal({});
+        setIsShowModalDelete(false);
     }
 
     return (
@@ -99,7 +100,7 @@ const User = () => {
                                                 <td>{Boolean(element.Group) ? element.Group.name : 'null'}</td>
                                                 <td className=''>
                                                     <button className='btn btn-warning '>Edit</button>
-                                                    <button className='btn btn-danger ms-1' onClick={() => openModelDelete(element)}>Delete</button>
+                                                    <button className='btn btn-danger ms-1' onClick={() => openModalDelete(element)}>Delete</button>
                                                 </td>
                                             </tr>
                                         )
@@ -140,12 +141,13 @@ const User = () => {
 
                 </div>
             </div>
-            <div
-                className="modal"
-                style={{ display: 'block', position: 'initial' }}
-            >
-                <ModelDelete show={isShowModelDelete} handleClose={closeModelDelete} handleComfirm={handleDeleteUser} dataModel={dataModel} />
-            </div>
+            <ModalDelete
+                show={isShowModalDelete}
+                handleClose={closeModalDelete}
+                handleComfirm={handleDeleteUser}
+                dataModal={dataModal} />
+            <ModalUsers title='hello' />
+
         </>
     )
 }

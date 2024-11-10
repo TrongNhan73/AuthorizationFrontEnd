@@ -2,11 +2,11 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
 
-const ModelDelete = (props) => {
+const ModalDelete = (props) => {
     return (
-        <Modal show={props.show} onHide={props.handleClose}>
+        <Modal show={props.show} onHide={props.handleClose} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Comfirm delete user {props.dataModel.username}</Modal.Title>
+                <Modal.Title>Comfirm delete user {props.dataModal.username}</Modal.Title>
             </Modal.Header>
             <Modal.Body>Are you sure delete this user?</Modal.Body>
             <Modal.Footer>
@@ -15,7 +15,7 @@ const ModelDelete = (props) => {
                 </Button>
                 <Button variant="primary" onClick={() => {
                     props.handleClose();
-                    props.handleComfirm(props.dataModel);
+                    props.handleComfirm(props.dataModal);
                 }}>
                     Yes
                 </Button>
@@ -24,4 +24,4 @@ const ModelDelete = (props) => {
     )
 }
 
-export default ModelDelete;
+export default ModalDelete;
