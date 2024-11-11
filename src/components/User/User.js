@@ -58,8 +58,8 @@ const User = () => {
     }
 
     return (
-        <>
-            <div className='user-container container    '>
+        <div className='container'>
+            <div className='user-container container'>
                 <div className='user-container__header'>
                     <div className='header__title'>
                         <h2>Table User</h2>
@@ -146,9 +146,9 @@ const User = () => {
                 handleClose={closeModalDelete}
                 handleComfirm={handleDeleteUser}
                 dataModal={dataModal} />
-            <ModalUsers title='hello' />
+            <ModalUsers title='Create' />//title is 'Create' or 'Update'
 
-        </>
+        </div>
     )
 }
 export default User;
