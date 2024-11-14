@@ -4,6 +4,7 @@ import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import ModalDelete from './ModalDelete';
 import ModalUsers from './ModalUser';
+import _ from 'lodash';
 
 
 const User = () => {
@@ -13,6 +14,8 @@ const User = () => {
     const [totalPage, setTotalPage] = useState(0);
     const [isShowModalDelete, setIsShowModalDelete] = useState(false);
     const [dataModal, setDataModal] = useState({});
+    const [dataModalUser, setDataModalUser] = useState({});
+    const [showModalUser, setShowModalUser] = useState(false);
     useEffect(() => {
         getList();
     }, [currPage]);
@@ -33,7 +36,6 @@ const User = () => {
 
     const handlePageClick = async (even) => {
         setCurrPage(even.selected + 1);
-
     }
 
     const handleDeleteUser = async (user) => {
@@ -57,6 +59,14 @@ const User = () => {
         setIsShowModalDelete(false);
     }
 
+
+    const closeModalUser = () => {
+        setShowModalUser(false);
+    }
+    const openModalUser = (data) => {
+        setShowModalUser(true);
+        setDataModalUser(data);
+    }
     return (
         <div className='container'>
             <div className='user-container container'>
@@ -69,7 +79,7 @@ const User = () => {
                             <button className='btn btn-success'>Reload</button>
                         </div>
                         <div className='action__create' >
-                            <button className='btn btn-primary'>Create</button>
+                            <button className='btn btn-primary' onClick={() => openModalUser({})}>Create</button>
                         </div>
                     </div>
                 </div>
@@ -99,7 +109,7 @@ const User = () => {
                                                 <td>{element.sex}</td>
                                                 <td>{Boolean(element.Group) ? element.Group.name : 'null'}</td>
                                                 <td className=''>
-                                                    <button className='btn btn-warning '>Edit</button>
+                                                    <button className='btn btn-warning ' onClick={() => openModalUser(element)}>Edit</button>
                                                     <button className='btn btn-danger ms-1' onClick={() => openModalDelete(element)}>Delete</button>
                                                 </td>
                                             </tr>
@@ -146,7 +156,7 @@ const User = () => {
                 handleClose={closeModalDelete}
                 handleComfirm={handleDeleteUser}
                 dataModal={dataModal} />
-            <ModalUsers title='Create' />//title is 'Create' or 'Update'
+            <ModalUsers data={dataModalUser} show={showModalUser} handleClose={closeModalUser} />
 
         </div>
     )

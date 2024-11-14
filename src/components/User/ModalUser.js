@@ -5,12 +5,16 @@ import { getGroup } from '../../service/groupService';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { isValidEmail, isValidPhone, isValidPassword } from '../../utils/Function.utils';
+import _ from 'lodash';
+
+
+
 
 const ModalUsers = (props) => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
-    const [userName, setUserName] = useState('');
+    const [userName, setUserName] = useState();
     const [gender, setGender] = useState('other');
     const [group, setGroup] = useState('');
     const [password, setPassword] = useState('');
@@ -22,16 +26,57 @@ const ModalUsers = (props) => {
         isValidPhone: true,
         isValidPassWord: true,
     });
-
     useEffect(() => {
         fetchGroup();
     }, [])
+    useEffect(() => {
+        if (props.show) {
+            if (!isCreateModal()) {
+                setEmail(props.data.email || '');
+                setPhone(props.data.phone || '');
+                setUserName(props.data.username);
+                setAddress(props.data.address || '');
+                setGender(props.data.sex || '');
+                setGroup(props.data.groupId || '');
+            } else {
+                setEmail('');
+                setPhone('');
+                setUserName('');
+                setAddress('');
+                setGender('');
+                setGroup('');
+            }
+            setIsValidInput(
+                {
+                    isValidEmail: true,
+                    isValidPhone: true,
+                    isValidPassWord: true,
+                }
+            )
+        } else {
+            setEmail('');
+            setPhone('');
+            setUserName('');
+            setAddress('');
+            setGender('');
+            setGroup('');
+        }
+    }, [props.show]);
 
+    const isCreateModal = () => {
+        if (props && _.isEmpty(props.data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     const fetchGroup = async () => {
         let res = await getGroup();
         if (res && res.data && res.data.DT) {
             setGroups(res.data.DT);
-            setGroup(res.data.DT[0].id)
+            // if (!group) {
+            //     setGroup(res.data.DT[0].id);
+            // }
         } else {
             toast.error('Error when get groups');
         }
@@ -55,7 +100,7 @@ const ModalUsers = (props) => {
             toast.error("User name is required!");
             return false;
         }
-        if (props.title !== 'Update') {
+        if (isCreateModal()) {
             if (!password) {
                 toast.error("Password is required!");
                 setIsValidInput({ ...isValidInput, isValidPassword: false });
@@ -87,9 +132,9 @@ const ModalUsers = (props) => {
         return true;
     }
     return (
-        <Modal show={true} onHide={props.handleClose} centered size='lg'>
+        <Modal show={props.show} onHide={props.handleClose} centered size='lg'>
             <Modal.Header closeButton>
-                <Modal.Title>{props.title + ' user'}</Modal.Title>
+                <Modal.Title>{isCreateModal ? 'Create ' : 'Update ' + ' user'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className='container row modal-user '>
@@ -97,8 +142,9 @@ const ModalUsers = (props) => {
                         <label htmlFor='email' className='form-label'>Email: (<span className='red'>*</span>)  </label>
                         <input
                             id='email'
-                            className={'form-control ' + (!email ? '' : isValidInput.isValidEmail ? 'is-valid' : 'is-invalid')}
+                            className={'form-control ' + (!email || !isCreateModal() ? '' : isValidInput.isValidEmail ? 'is-valid' : 'is-invalid')}
                             value={email}
+                            disabled={!isCreateModal()}
                             onChange={(even) => {
                                 setEmail(even.target.value);
                                 setIsValidInput({ ...isValidInput, isValidEmail: isValidEmail(even.target.value) });
@@ -108,8 +154,9 @@ const ModalUsers = (props) => {
                         <label htmlFor='phone' className='form-label'>Phone: (<span className='red'>*</span>) </label>
                         <input
                             id='phone'
-                            className={'form-control ' + (!phone ? '' : isValidInput.isValidPhone ? 'is-valid' : 'is-invalid')}
+                            className={'form-control ' + (!phone || !isCreateModal() ? '' : isValidInput.isValidPhone ? 'is-valid' : 'is-invalid')}
                             value={phone}
+                            disabled={!isCreateModal()}
                             onChange={(even) => {
                                 setPhone(even.target.value);
                                 setIsValidInput({ ...isValidInput, isValidPhone: isValidPhone(even.target.value) });
@@ -133,19 +180,22 @@ const ModalUsers = (props) => {
                     </div>
                     <div className='form-group col-sm-6'>
                         <label htmlFor='sex' className='form-label'>Gender: (<span className='red'>*</span>)</label>
-                        <select className='form-select' onChange={(even) => { setGender(even.target.value) }}>
-                            <option value={'other'}>Other</option>
-                            <option value={'male'}>Male</option>
-                            <option value={'female'}>Female</option>
+                        <select className='form-select' value={gender} onChange={(even) => { setGender(even.target.value) }}>
+                            <option value={''} >Other</option>
+                            <option value={'male'} >Male</option>
+                            <option value={'female'} >Female</option>
                         </select>
                     </div>
                     <div className='form-group col-sm-6'>
                         <label htmlFor='group' className='form-label'>Group: (<span className='red'>*</span>)</label>
-                        <select className='form-select' onChange={(even) => setGroup(even.target.value)}>
-                            {groups.length > 0 && groups.map((item, index) => <option key={'opt' + index} value={item.id}>{item.name} </option>)}
+                        <select className='form-select' value={group} onChange={(even) => setGroup(even.target.value)}>
+                            <option value={''} >Undefinde</option>
+                            {groups.length > 0 && groups.map((item, index) => (item.id == group) ?
+                                <option key={'opt' + index} value={item.id} selected>{item.name} </option>
+                                : <option key={'opt' + index} value={item.id} >{item.name} </option>)}
                         </select>
                     </div>
-                    <div className={props.title === 'Create' ? 'form-group col-sm-6' : 'd-none'}>
+                    <div className={isCreateModal() ? 'form-group col-sm-6' : 'd-none'}>
                         <label htmlFor='password' className='form-label'>Password: (<span className='red'>*</span>)</label>
                         <input
                             type={isShowPass ? 'text' : 'password'}
@@ -166,12 +216,12 @@ const ModalUsers = (props) => {
                             <label htmlFor='cb-showpassword' className='form-check-label'>Show password</label>
                         </div>
                     </div>
-                    <div className={props.title === 'Create' ? 'form-group col-sm-6' : 'd-none'}>
+                    <div className={isCreateModal() ? 'form-group col-sm-6' : 'd-none'}>
                         <label htmlFor='password-comfirm' className='form-label'>Comfirm Password: (<span className='red'>*</span>)</label>
                         <input
                             type={isShowPass ? 'text' : 'password'}
                             id='password-comfirm'
-                            className='form-control '
+                            className='form-control'
                             value={passwordComfirm}
                             onChange={(even) => setPasswordComfirm(even.target.value)} />
                     </div>
@@ -195,7 +245,7 @@ const ModalUsers = (props) => {
                         });
                     }
                 }}>
-                    {props.title}
+                    {isCreateModal() ? 'Create' : 'Update'}
                 </Button>
             </Modal.Footer>
         </Modal>
