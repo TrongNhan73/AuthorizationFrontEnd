@@ -5,6 +5,7 @@ import { getGroup } from '../../service/groupService';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { isValidEmail, isValidPhone, isValidPassword } from '../../utils/Function.utils';
+import { createUser } from '../../service/userService';
 import _ from 'lodash';
 
 
@@ -231,18 +232,27 @@ const ModalUsers = (props) => {
                 <Button variant="secondary" onClick={() => props.handleClose()}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={() => {
+                <Button variant="primary" onClick={async () => {
                     // props.handleClose();
                     if (checkValidInput()) {
-                        toast.success('Create successfull!');
-                        console.log({
+                        let res = await createUser({
                             email,
                             phone,
                             address,
                             userName,
                             gender,
-                            group
+                            group,
+                            password
                         });
+                        if (+res.data.EC === 0) {
+                            toast.success('Create successfull!');
+
+                        } else {
+                            toast.success('Create failed!');
+                            console.log(res.data.EM);
+
+                        }
+
                     }
                 }}>
                     {isCreateModal() ? 'Create' : 'Update'}

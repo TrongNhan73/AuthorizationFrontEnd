@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getUserList, deleteUser, login } from '../../service/userService';
+import { getUserList, deleteUser, login, createUser } from '../../service/userService';
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import ModalDelete from './ModalDelete';
@@ -67,6 +67,7 @@ const User = () => {
         setShowModalUser(true);
         setDataModalUser(data);
     }
+
     return (
         <div className='container'>
             <div className='user-container container'>
