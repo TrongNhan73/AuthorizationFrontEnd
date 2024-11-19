@@ -5,7 +5,7 @@ import { getGroup } from '../../service/groupService';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { isValidEmail, isValidPhone, isValidPassword } from '../../utils/Function.utils';
-import { createUser } from '../../service/userService';
+import { createUser, updateUser } from '../../service/userService';
 import _ from 'lodash';
 
 
@@ -61,6 +61,8 @@ const ModalUsers = (props) => {
             setAddress('');
             setGender('');
             setGroup('');
+            setPassword('');
+            setPasswordComfirm('');
         }
     }, [props.show]);
 
@@ -71,6 +73,7 @@ const ModalUsers = (props) => {
             return false;
         }
     }
+
     const fetchGroup = async () => {
         let res = await getGroup();
         if (res && res.data && res.data.DT) {
@@ -82,21 +85,9 @@ const ModalUsers = (props) => {
             toast.error('Error when get groups');
         }
     }
+
     const checkValidInput = () => {
-        if (!email) {
-            setIsValidInput({ ...isValidInput, isValidEmail: false });
-            toast.error("Email is required!");
-            return false;
-        }
-        if (!isValidEmail(email)) {
-            toast.error("The email is invalid!");
-            return false;
-        }
-        if (!phone) {
-            toast.error("Phone number is required!");
-            setIsValidInput({ ...isValidInput, isValidPhone: false });
-            return false;
-        }
+
         if (!userName) {
             toast.error("User name is required!");
             return false;
@@ -117,20 +108,76 @@ const ModalUsers = (props) => {
                     return false;
                 }
             }
+            if (!isValidInput.isValidEmail) {
+                toast.error("The email is invalid!");
+                return false;
+            }
+            if (!isValidInput.isValidPhone) {
+                toast.error("The phone num is invalid!");
+                return false;
+            }
+            if (!isValidInput.isValidPassWord) {
+                toast.error("The password must have more 3 letter!");
+                return false;
+            }
+            if (!email) {
+                setIsValidInput({ ...isValidInput, isValidEmail: false });
+                toast.error("Email is required!");
+                return false;
+            }
+            if (!isValidEmail(email)) {
+                toast.error("The email is invalid!");
+                return false;
+            }
+            if (!phone) {
+                toast.error("Phone number is required!");
+                setIsValidInput({ ...isValidInput, isValidPhone: false });
+                return false;
+            }
         }
-        if (!isValidInput.isValidEmail) {
-            toast.error("The email is invalid!");
-            return false;
-        }
-        if (!isValidInput.isValidPhone) {
-            toast.error("The phone num is invalid!");
-            return false;
-        }
-        if (!isValidInput.isValidPassWord) {
-            toast.error("The password must have more 3 letter!");
-            return false;
-        }
+
         return true;
+    }
+
+    const handleCreate = async () => {
+        // props.handleClose();
+        if (checkValidInput()) {
+            let res = await createUser({
+                email,
+                phone,
+                address,
+                userName,
+                gender,
+                group,
+                password
+            });
+            if (+res.data.EC === 0) {
+                toast.success('Create successfull!');
+                props.handleClose();
+            } else {
+                toast.error(res.data.EM);
+            }
+
+        }
+    }
+    const handleUpdateUser = async () => {
+        if (checkValidInput()) {
+            let res = await updateUser({
+                address,
+                userName,
+                gender,
+                group,
+                id: props.data.id
+            });
+            if (+res.data.EC === 0) {
+                toast.success(res.data.EM);
+                props.handleClose();
+                window.location.reload();
+            } else {
+                toast.error(res.data.EM);
+            }
+
+        }
     }
     return (
         <Modal show={props.show} onHide={props.handleClose} centered size='lg'>
@@ -233,26 +280,10 @@ const ModalUsers = (props) => {
                     Close
                 </Button>
                 <Button variant="primary" onClick={async () => {
-                    // props.handleClose();
-                    if (checkValidInput()) {
-                        let res = await createUser({
-                            email,
-                            phone,
-                            address,
-                            userName,
-                            gender,
-                            group,
-                            password
-                        });
-                        if (+res.data.EC === 0) {
-                            toast.success('Create successfull!');
-
-                        } else {
-                            toast.success('Create failed!');
-                            console.log(res.data.EM);
-
-                        }
-
+                    if (isCreateModal()) {
+                        handleCreate();
+                    } else {
+                        handleUpdateUser()
                     }
                 }}>
                     {isCreateModal() ? 'Create' : 'Update'}

@@ -18,13 +18,20 @@ const getUserList = async (page, limit) => {
 const deleteUser = async (id) => {
     return await axios.delete(linkApi + '/users/delete', { data: { id } });
 }
+
 const createUser = async (data) => {
     return await axios.post(linkApi + '/users/create', { ...data });
+}
+
+const updateUser = async (data) => {
+    return await axios.put(linkApi + '/users/update', { ...data });
+
 }
 export {
     registerNewUser,
     login,
     getUserList,
     deleteUser,
-    createUser
+    createUser,
+    updateUser
 }
