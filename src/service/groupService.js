@@ -1,7 +1,7 @@
-import axios from "axios";
-const linkApi = 'http://localhost:8081/api/v1';
+import axios from "../setup/axios";
+
 
 const getGroup = async () => {
-    return await axios.get(linkApi + '/groups/read');
+    return await axios.get('/groups/read');
 }
 export { getGroup }

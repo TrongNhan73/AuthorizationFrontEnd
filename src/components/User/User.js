@@ -22,11 +22,12 @@ const User = () => {
     const getList = async () => {
         try {
             let res = await getUserList(currPage, currLimit);
-            if (res && res.data && +res.data.EC === 0) {
-                setUserList(res.data.DT.users);
-                setTotalPage(res.data.DT.totalPage);
+            if (res && +res.EC === 0) {
+                console.log('>>>Check respond:', res);
+                setUserList(res.DT.users);
+                setTotalPage(res.DT.totalPage);
             } else {
-                console.log(res.data.EM);
+                console.log(res.EM);
             }
         } catch (e) {
             console.log(e.message);
@@ -40,7 +41,7 @@ const User = () => {
 
     const handleDeleteUser = async (user) => {
         let res = await deleteUser(user.id);
-        if (res && res.data && +res.data.EC === 0) {
+        if (res && +res.EC === 0) {
             toast.success('Delete successful!');
             await getList();
         } else {

@@ -76,8 +76,8 @@ const ModalUsers = (props) => {
 
     const fetchGroup = async () => {
         let res = await getGroup();
-        if (res && res.data && res.data.DT) {
-            setGroups(res.data.DT);
+        if (res && res.DT) {
+            setGroups(res.DT);
             // if (!group) {
             //     setGroup(res.data.DT[0].id);
             // }
@@ -151,11 +151,11 @@ const ModalUsers = (props) => {
                 group,
                 password
             });
-            if (+res.data.EC === 0) {
+            if (+res.EC === 0) {
                 toast.success('Create successfull!');
                 props.handleClose();
             } else {
-                toast.error(res.data.EM);
+                toast.error(res.EM);
             }
 
         }
@@ -169,12 +169,12 @@ const ModalUsers = (props) => {
                 group,
                 id: props.data.id
             });
-            if (+res.data.EC === 0) {
-                toast.success(res.data.EM);
+            if (+res.EC === 0) {
+                toast.success(res.EM);
                 props.handleClose();
                 window.location.reload();
             } else {
-                toast.error(res.data.EM);
+                toast.error(res.EM);
             }
 
         }
