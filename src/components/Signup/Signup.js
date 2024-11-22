@@ -91,11 +91,11 @@ function Signup(props) {
         let userData = { email, userName, phoneNum, password };
         if (isValidInput()) {
             let res = await registerNewUser(userData);
-            if (+res.data.EC == 0) {
+            if (+res.EC == 0) {
                 toast.success("Success");
                 navigate('/login');
             } else {
-                toast.error(res.data.EM);
+                toast.error(res.EM);
             }
 
         }

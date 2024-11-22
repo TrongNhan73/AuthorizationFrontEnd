@@ -10,7 +10,7 @@ const instance = axios.create({
 // // Alter defaults after instance has been created
 // instance.defaults.headers.common['Authorization'] = 'AUTH_TOKEN123';
 
-
+instance.defaults.withCredentials = true;
 
 
 

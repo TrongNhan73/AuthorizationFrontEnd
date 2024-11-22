@@ -60,7 +60,7 @@ function Login(props) {
     const handleLogin = async () => {
         if (validate()) {
             let res = await login({ ephone, password });
-            if (res && res.data && +res.data.EC === 0) {
+            if (res && +res.EC === 0) {
                 let dataS = {
                     isAuthenticated: true,
                     token: 'fake token'
@@ -69,7 +69,7 @@ function Login(props) {
                 navigate('/users');
                 toast.success('Login successful');
             } else {
-                toast.error(res.data.EM)
+                toast.error(res.EM)
             }
         }
     }
