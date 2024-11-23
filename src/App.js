@@ -1,6 +1,7 @@
 import Nav from "./components/Navigation/Nav";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserProvider } from "./context/userContext";
 
 import {
   BrowserRouter as Router,
@@ -29,29 +30,31 @@ function App() {
     }
   }, [])
   return (
-    <Router>
-      <div className="App">
-        <div className="App-navigation">
-          <Nav />
+    <UserProvider>
+      <Router>
+        <div className="App">
+          <div className="App-navigation">
+            <Nav />
+          </div>
+          <div className="App-container">
+            <AppRoutes />
+          </div>
         </div>
-        <div className="App-container">
-          <AppRoutes />
-        </div>
-      </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-      <ToastContainer />
-    </Router>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        <ToastContainer />
+      </Router>
+    </UserProvider>
   );
 }
 

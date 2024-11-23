@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { getUserList, deleteUser, login, createUser } from '../../service/userService';
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import ModalDelete from './ModalDelete';
 import ModalUsers from './ModalUser';
 import _ from 'lodash';
-
+import { userContext } from '../../context/userContext';
 
 const User = () => {
     const [userList, setUserList] = useState([]);
@@ -16,6 +16,8 @@ const User = () => {
     const [dataModal, setDataModal] = useState({});
     const [dataModalUser, setDataModalUser] = useState({});
     const [showModalUser, setShowModalUser] = useState(false);
+    const dataUser = useContext(userContext);
+    console.log(dataUser);
     useEffect(() => {
         getList();
     }, [currPage]);
@@ -23,7 +25,6 @@ const User = () => {
         try {
             let res = await getUserList(currPage, currLimit);
             if (res && +res.EC === 0) {
-                console.log('>>>Check respond:', res);
                 setUserList(res.DT.users);
                 setTotalPage(res.DT.totalPage);
             } else {
