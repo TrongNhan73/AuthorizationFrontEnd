@@ -4,8 +4,7 @@ import Login from '../components/Login/Login';
 import Signup from '../components/Signup/Signup';
 import User from '../components/User/User'
 import PrivateRoutes from './PrivateRoutes';
-
-
+import Loading from '../components/Loading/Loading';
 
 export const AppRoutes = () => {
     return (
@@ -16,7 +15,7 @@ export const AppRoutes = () => {
                 <Route element={<PrivateRoutes />}>
                     <Route path='/users' element={<User />} />
                     <Route path="/projects" Component={() => <div>project</div>} />
-                    <Route path="/" Component={() => <div>home</div>} />
+                    <Route path="/" Component={() => <div><Loading /></div>} />
                 </Route>
                 <Route path="*" Component={() => <div>undefine</div>} />
 

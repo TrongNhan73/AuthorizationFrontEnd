@@ -1,14 +1,15 @@
 import './Login.scss';
 import { useNavigate, Link } from 'react-router-dom';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { isValidEmail, isValidPhone, isValidPassword } from '../../utils/Function.utils';
 import { login } from '../../service/userService';
-
+import { userContext } from '../../context/userContext';
 
 
 
 function Login(props) {
+    const { setsDataUser } = useContext(userContext);
     const navigate = useNavigate();
     const [ephone, setEPhoen] = useState('');
     const [password, setPassword] = useState('');
@@ -63,23 +64,23 @@ function Login(props) {
             if (res && +res.EC === 0) {
                 let dataS = {
                     isAuthenticated: true,
-                    token: 'fake token'
+                    token: 'fake token',
+                    account: {
+                        roles: res.DT.roles,
+                        email: res.DT.email,
+                        username: res.DT.username,
+                    }
                 }
-                sessionStorage.setItem('account', JSON.stringify(dataS));
+                setsDataUser(dataS)
                 navigate('/users');
                 toast.success('Login successful');
             } else {
-                toast.error(res.EM)
+                toast.error(res.EM);
             }
         }
     }
 
 
-    useEffect(() => {
-        if (sessionStorage.getItem('account')) {
-            navigate('/')
-        }
-    }, [])
     return (
         <div className="login-container d-flex align-items-center p-2">
             <div className="container d-block">

@@ -127,11 +127,6 @@ function Signup(props) {
             setObjCheckInput({ ...objCheckInput, isValidPasswordComfirm: true });
         }
     }, [passwordComfirm]);
-    useEffect(() => {
-        if (sessionStorage.getItem('account')) {
-            navigate('/')
-        }
-    }, [])
     return (
         <div className="login-container d-flex align-items-center p-2">
             <div className="container d-block">

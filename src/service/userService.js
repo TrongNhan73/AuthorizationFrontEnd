@@ -29,11 +29,15 @@ const updateUser = async (data) => {
     return await axios.put('/users/update', { ...data });
 
 }
+const getAccount = async () => {
+    return axios.get('/account');
+}
 export {
     registerNewUser,
     login,
     getUserList,
     deleteUser,
     createUser,
-    updateUser
+    updateUser,
+    getAccount
 }
