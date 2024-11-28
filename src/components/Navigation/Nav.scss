@@ -21,3 +21,24 @@
         color: white;
     }
 }
+
+
+.nav-header {
+    .bg-header {
+        background-color: #1b1b1d;
+    }
+
+    a {
+
+
+        &:hover {
+            text-shadow: rgb(255, 255, 255) 2px 0 10px;
+
+        }
+    }
+
+    .active {
+        color: aqua !important;
+    }
+
+}

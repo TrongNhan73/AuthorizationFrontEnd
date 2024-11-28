@@ -9,7 +9,7 @@ import { userContext } from '../../context/userContext';
 
 
 function Login(props) {
-    const { setsDataUser } = useContext(userContext);
+    const { dataUser, setsDataUser } = useContext(userContext);
     const navigate = useNavigate();
     const [ephone, setEPhoen] = useState('');
     const [password, setPassword] = useState('');
@@ -79,7 +79,11 @@ function Login(props) {
             }
         }
     }
-
+    useEffect(() => {
+        if (dataUser.isAuthenticated) {
+            navigate('/users');
+        }
+    })
 
     return (
         <div className="login-container d-flex align-items-center p-2">
