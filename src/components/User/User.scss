@@ -3,3 +3,13 @@
         color: red;
     }
 }
+
+.pagination-container {
+
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 10px;
+}

@@ -32,6 +32,11 @@ const updateUser = async (data) => {
 const getAccount = async () => {
     return axios.get('/account');
 }
+
+const logOutUser = async () => {
+    return await axios.post('/logout');
+
+}
 export {
     registerNewUser,
     login,
@@ -39,5 +44,6 @@ export {
     deleteUser,
     createUser,
     updateUser,
-    getAccount
+    getAccount,
+    logOutUser
 }

@@ -71,9 +71,10 @@ function Login(props) {
                         username: res.DT.username,
                     }
                 }
-                setsDataUser(dataS)
-                navigate('/users');
+                setsDataUser(dataS);
                 toast.success('Login successful');
+                navigate('/users');
+
             } else {
                 toast.error(res.EM);
             }

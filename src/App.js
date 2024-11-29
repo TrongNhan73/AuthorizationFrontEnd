@@ -1,5 +1,5 @@
 import NavHeader from "./components/Navigation/NavHeader";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loading from "./components/Loading/Loading";
 import {
@@ -44,7 +44,6 @@ function App() {
         pauseOnHover
         theme="light"
       />
-      <ToastContainer />
     </Router>
   );
 }

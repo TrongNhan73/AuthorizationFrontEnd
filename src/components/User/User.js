@@ -132,25 +132,27 @@ const User = () => {
                 </div>
                 <div className='user-footer'>
                     {totalPage > 0 &&
-                        <ReactPaginate
-                            nextLabel='next'
-                            previousLabel='previous'
-                            breakLabel='...'
-                            pageRangeDisplayed={2}
-                            marginPagesDisplayed={1}
-                            pageCount={totalPage}
-                            onPageChange={handlePageClick}
-                            className='pagination'
-                            breakClassName={'page-item'}
-                            breakLinkClassName={'page-link'}
-                            pageClassName={'page-item'}
-                            pageLinkClassName={'page-link'}
-                            previousClassName={'page-item'}
-                            previousLinkClassName={'page-link'}
-                            nextClassName={'page-item'}
-                            nextLinkClassName={'page-link'}
-                            activeClassName={'active'}
-                        />}
+                        <div className='pagination-container container'>
+                            <ReactPaginate
+                                nextLabel='next'
+                                previousLabel='previous'
+                                breakLabel='...'
+                                pageRangeDisplayed={2}
+                                marginPagesDisplayed={1}
+                                pageCount={totalPage}
+                                onPageChange={handlePageClick}
+                                className='pagination'
+                                breakClassName={'page-item'}
+                                breakLinkClassName={'page-link'}
+                                pageClassName={'page-item'}
+                                pageLinkClassName={'page-link'}
+                                previousClassName={'page-item'}
+                                previousLinkClassName={'page-link'}
+                                nextClassName={'page-item'}
+                                nextLinkClassName={'page-link'}
+                                activeClassName={'active'}
+                            />
+                        </div>}
 
                 </div>
             </div>
