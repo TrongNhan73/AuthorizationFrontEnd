@@ -5,7 +5,7 @@ import Signup from '../components/Signup/Signup';
 import User from '../components/User/User'
 import PrivateRoutes from './PrivateRoutes';
 import Loading from '../components/Loading/Loading';
-
+import Role from '../components/Role/Role';
 export const AppRoutes = () => {
     return (
         <>
@@ -14,6 +14,7 @@ export const AppRoutes = () => {
                 <Route path="/signup" element={<Signup />} />
                 <Route element={<PrivateRoutes />}>
                     <Route path='/users' element={<User />} />
+                    <Route path="/roles" Component={() => <Role />} />
                     <Route path="/projects" Component={() => <div>project</div>} />
                     <Route path="/" Component={() => <div><Loading /></div>} />
                 </Route>

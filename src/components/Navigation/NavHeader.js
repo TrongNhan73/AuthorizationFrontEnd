@@ -55,6 +55,7 @@ function NavHeader(props) {
                             <Nav className="me-auto">
                                 <NavLink to="/" className={'nav-link'}>Home</NavLink>
                                 <NavLink to="/users" className={'nav-link'}>User</NavLink>
+                                <NavLink to="/roles" className={'nav-link'}>Roles</NavLink>
                                 <NavLink to="/projects" className={'nav-link'}>Project</NavLink>
                             </Nav>
                             <Nav>

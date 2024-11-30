@@ -1,0 +1,26 @@
+.role-container {
+    .actions {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        i {
+            cursor: pointer;
+            transition: all 500ms;
+
+            &:hover {
+                transform: rotate(20deg) scale(1.5);
+            }
+        }
+
+        .icon-plus {
+            color: green;
+        }
+
+        .icon-trash {
+            color: rgb(234, 76, 76);
+        }
+    }
+
+}
