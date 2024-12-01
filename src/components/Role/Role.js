@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './Role.scss';
 import _ from 'lodash';
 import { v4 } from 'uuid';
-
+import { toast } from 'react-toastify';
+import { createRole } from '../../service/roleService';
 
 export default function Role(props) {
     const [listChilds, setListChilds] = useState({
@@ -30,6 +31,38 @@ export default function Role(props) {
         let _listChild = _.cloneDeep(listChilds);
         delete _listChild[keyid];
         setListChilds(_listChild);
+    }
+
+
+
+    const buildDataPersist = () => {
+        let _listChild = _.cloneDeep(listChilds);
+        let data = [];
+        Object.entries(listChilds).map(([key, value], index) => {
+            data.push(value);
+        });
+        return data;
+    }
+
+
+
+    const handleSave = async () => {
+        let check = true;
+        check = Object.entries(listChilds).some(([key, value], index) => value && !value.url);
+        if (check) {
+            toast.error('The url must not be empty!');
+        } else {
+            let res = await createRole(buildDataPersist());
+            console.log(res);
+            if (+res.EC === 0) {
+                toast.success('Create new roles successful');
+                setListChilds({
+                    child1: { url: '', description: '' },
+                })
+            } else {
+                toast.error(res.EM);
+            }
+        }
     }
 
     return (
@@ -70,7 +103,7 @@ export default function Role(props) {
 
                     </div>
                     <div>
-                        <button className='btn btn-warning mt-3'>Save</button>
+                        <button className='btn btn-warning mt-3' onClick={handleSave}>Save</button>
                     </div>
                 </div>
             </div>

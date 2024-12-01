@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { toast } from 'react-toastify';
 
 
 // Set config defaults when creating the instance
@@ -32,11 +32,12 @@ instance.interceptors.response.use(function (response) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     const status = error && error.response && error.response.status || 500;
-
-    switch (status) {
-        case 401: console.log(error.response.data.EM);
-    }
+    // switch (status) {
+    //     case 401: toast.error(error.response.data.EM)
+    //     case 403: toast.error(error.response.data.EM);
+    // }
     // return Promise.reject(error);
+    return error.response.data;
 });
 
 export default instance;
